@@ -1,16 +1,5 @@
 """
 ph_calculator.py
-================
-Modul logika perhitungan pH untuk Kalkulator pH Kelas.
-Berisi semua fungsi hitung untuk:
-  - Asam kuat & asam lemah
-  - Basa kuat & basa lemah
-  - Hidrolisis garam (4 jenis)
-
-Setiap fungsi mengembalikan dictionary berisi:
-  - steps : list of string (langkah-langkah perhitungan)
-  - ice   : dict (tabel ICE, jika relevan)
-  - result: dict (nilai akhir: H_plus, OH_minus, pH, pOH, label)
 """
 
 import math
