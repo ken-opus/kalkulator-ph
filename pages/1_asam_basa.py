@@ -39,7 +39,8 @@ st.markdown("""
     }
 
     /* Sembunyikan default header streamlit */
-    #MainMenu, footer, header {visibility: hidden;}
+   #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
 
     /* Judul halaman */
     .page-title {
