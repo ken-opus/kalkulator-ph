@@ -16,6 +16,8 @@ from utils.ph_calculator import (
     hitung_hidrolisis_garam,
     format_angka,
 )
+from utils.sidebar import tampilkan_sidebar
+tampilkan_sidebar()
 
 # ── Konfigurasi halaman ────────────────────────────────────────────────────
 st.set_page_config(
