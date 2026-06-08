@@ -185,8 +185,7 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
-    st.caption("📚 Untuk keperluan pembelajaran kimia kelas")
-
+    
 
 # ═══════════════════════════════════════════════════════
 # HERO
