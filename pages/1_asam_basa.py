@@ -41,6 +41,7 @@ st.markdown("""
     /* Sembunyikan default header streamlit */
    #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+    [data-testid="stSidebarNav"] {display: none;}
 
     /* Judul halaman */
     .page-title {
