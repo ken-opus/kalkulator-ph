@@ -18,16 +18,15 @@ from utils.ph_calculator import (
     hitung_basa_lemah,
     format_angka,
 )
+from utils.sidebar import tampilkan_sidebar
+tampilkan_sidebar()
 
 # ── Konfigurasi halaman ────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Kalkulator pH — Asam & Basa",
     page_icon="⚗️",
     layout="centered",
-    initial_sidebar_state="expanded"
 )
-from utils.sidebar import tampilkan_sidebar
-tampilkan_sidebar()
 
 # ── Custom CSS ─────────────────────────────────────────────────────────────
 st.markdown("""
