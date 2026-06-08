@@ -25,6 +25,7 @@ st.markdown("""
     }
    #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+    [data-testid="stSidebarNav"] {display: none;}
     
     /* ── Hero Section ── */
     .hero {
