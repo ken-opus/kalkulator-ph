@@ -23,8 +23,9 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'DM Sans', sans-serif;
     }
-    #MainMenu, footer, header { visibility: hidden; }
-
+   #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    
     /* ── Hero Section ── */
     .hero {
         text-align: center;
