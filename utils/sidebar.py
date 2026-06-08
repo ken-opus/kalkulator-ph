@@ -10,4 +10,3 @@ def tampilkan_sidebar():
         st.page_link("pages/1_asam_basa.py", label="🔬 Asam & Basa")
         st.page_link("pages/2_hidrolisis.py",label="🧂 Hidrolisis Garam")
         st.markdown("---")
-        st.caption("📚 Untuk keperluan pembelajaran kimia")
