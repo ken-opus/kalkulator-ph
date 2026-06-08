@@ -194,24 +194,6 @@ st.markdown("""
 # FUNGSI HELPER TAMPILAN
 # ═══════════════════════════════════════════════════════
 
-with st.sidebar:
-    st.markdown("### ⚗️ Kalkulator pH")
-    st.markdown("---")
-    st.markdown("**Navigasi Halaman**")
-    st.page_link("app.py",               label="🏠 Beranda")
-    st.page_link("pages/1_asam_basa.py", label="🔬 Asam & Basa")
-    st.page_link("pages/2_hidrolisis.py",label="🧂 Hidrolisis Garam")
-    st.markdown("---")
-    st.markdown("**Referensi Cepat**")
-    st.markdown("""
-    • Kw = 1×10⁻¹⁴ (25°C)  
-    • pH + pOH = 14  
-    • pH < 7 → Asam  
-    • pH = 7 → Netral  
-    • pH > 7 → Basa
-    """)
-    st.markdown("---")
-    st.caption("📚 Untuk keperluan pembelajaran kimia")
     
 def tampilkan_kartu_ph(pH: float, pOH: float, H_plus: float, OH_minus: float, label: str):
     """Tampilkan kartu besar hasil pH."""
