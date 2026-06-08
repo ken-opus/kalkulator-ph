@@ -34,7 +34,8 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'DM Sans', sans-serif;
     }
-    #MainMenu, footer, header {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
 
     .page-title {
         font-size: 2rem;
