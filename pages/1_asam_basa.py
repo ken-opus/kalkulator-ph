@@ -26,6 +26,8 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="expanded"
 )
+from utils.sidebar import tampilkan_sidebar
+tampilkan_sidebar()
 
 # ── Custom CSS ─────────────────────────────────────────────────────────────
 st.markdown("""
