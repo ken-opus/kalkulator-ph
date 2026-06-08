@@ -36,6 +36,7 @@ st.markdown("""
     }
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+    [data-testid="stSidebarNav"] {display: none;}
 
     .page-title {
         font-size: 2rem;
