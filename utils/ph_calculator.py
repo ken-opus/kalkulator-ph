@@ -74,7 +74,20 @@ def hitung_asam_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
     OH_minus = Kw / H_plus
     pH = hitung_pH(H_plus)
     pOH = pKw - pH
-
+    
+  # ── Validasi ──────────────────────────────────────
+    peringatan = []
+    if konsentrasi > 1.0:
+        peringatan.append(
+            "⚠️ Konsentrasi > 1 M: rumus larutan ideal tidak akurat di konsentrasi tinggi."
+        )
+    if pH > 14:
+        peringatan.append(
+            f"⚠️ pH = {pH:.2f} melebihi skala 0–14. "
+            "Pada kondisi nyata, pH tidak dapat melebihi 14 secara signifikan."
+        )
+    # ──────────────────────────────────────────────────
+    
     steps = [
         f"**Reaksi ionisasi:**",
         f"  {nama}  →  H⁺  +  anion⁻  (ionisasi sempurna, α = 1)",
