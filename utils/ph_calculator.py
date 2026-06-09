@@ -220,10 +220,22 @@ def hitung_basa_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
     volume_L = volume / 1000
     mol_basa = konsentrasi * volume_L
 
-    OH_minus = konsentrasi
+    OH_minus = konsentrasi * n_OH
     H_plus = Kw / OH_minus
     pOH = hitung_pOH(OH_minus)
     pH = pKw - pOH
+ # ── Validasi ──────────────────────────────────────
+    peringatan = []
+    if konsentrasi > 1.0:
+        peringatan.append(
+            "⚠️ Konsentrasi > 1 M: rumus larutan ideal tidak akurat di konsentrasi tinggi."
+        )
+    if pH > 14:
+        peringatan.append(
+            f"⚠️ pH = {pH:.2f} melebihi skala 0–14. "
+            "Pada kondisi nyata, pH tidak dapat melebihi 14 secara signifikan."
+        )
+ # ──────────────────────────────────────────────────
 
     steps = [
         f"**Reaksi ionisasi:**",
@@ -253,6 +265,7 @@ def hitung_basa_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
     return {
         "steps": steps,
         "ice": None,
+        "peringatan": peringatan,   
         "mol": {
             "zat": mol_basa,
             "OH_minus": mol_basa,
