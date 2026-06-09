@@ -340,7 +340,21 @@ with tab1:
 
                 st.markdown('<hr class="divider">', unsafe_allow_html=True)
                 st.markdown("#### 📋 Hasil Perhitungan")
+                
+                n_H = info_ak.get("n_H", 1)   # ← ambil n_H dari list
 
+                # Peringatan konsentrasi tidak realistis (opsional per zat)
+                if konsentrasi_ak > 1.0:
+                    st.warning(
+                        f"⚠️ Konsentrasi {konsentrasi_ak} M sangat tinggi. "
+                        "Hasil perhitungan mungkin tidak mencerminkan kondisi nyata."
+                    )
+
+                hasil = hitung_asam_kuat(nama_ak, konsentrasi_ak, volume_ak, n_H=n_H)
+
+                # Tampilkan peringatan dari kalkulator
+                for p in hasil.get("peringatan", []):
+                    st.warning(p)
                 # Kartu pH
                 tampilkan_kartu_ph(r["pH"], r["pOH"], r["H_plus"], r["OH_minus"], r["label"])
 
@@ -497,6 +511,7 @@ with tab3:
                         st.write("")
                     else:
                         st.code(step.strip(), language=None)
+                        
                 # Peringatan solubilitas
                 sol_max = info_bk.get("sol_max")
                 if sol_max and konsentrasi_bk > sol_max:
@@ -508,6 +523,7 @@ with tab3:
                 # Peringatan dari kalkulator
                 for p in hasil.get("peringatan", []):
                     st.warning(p)
+                    
             except Exception as e:
                 st.error(f"Terjadi kesalahan: {e}")
 
