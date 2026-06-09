@@ -75,7 +75,7 @@ def hitung_asam_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
     pH = hitung_pH(H_plus)
     pOH = pKw - pH
     
-  # ── Validasi ──────────────────────────────────────
+ # ── Validasi ──────────────────────────────────────
     peringatan = []
     if konsentrasi > 1.0:
         peringatan.append(
@@ -86,51 +86,32 @@ def hitung_asam_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
             f"⚠️ pH = {pH:.2f} melebihi skala 0–14. "
             "Pada kondisi nyata, pH tidak dapat melebihi 14 secara signifikan."
         )
-    # ──────────────────────────────────────────────────
-    
+ # ──────────────────────────────────────────────────
+
     steps = [
         f"**Reaksi ionisasi:**",
-        f"  {nama}  →  H⁺  +  anion⁻  (ionisasi sempurna, α = 1)",
-        "",
-        f"**Perhitungan mol:**",
-        f"  Mol {nama} = C × V = {konsentrasi} M × {volume} mL × (1 L / 1000 mL)",
-        f"             = {mol_asam:.6f} mol",
-        "",
-        f"**Konsentrasi ion H⁺:**",
-        f"  Karena ionisasi sempurna:",
-        f"  [H⁺] = [Asam] = {format_angka(H_plus)} M",
+        f"  {nama}  →  kation  +  {n_OH} OH⁻  (ionisasi sempurna)",
         "",
         f"**Konsentrasi ion OH⁻:**",
-        f"  [OH⁻] = Kw / [H⁺] = 10⁻¹⁴ / {format_angka(H_plus)}",
-        f"        = {format_angka(OH_minus)} M",
+        f"  [OH⁻] = {n_OH} × C = {n_OH} × {konsentrasi} = {format_angka(OH_minus)} M",
+        "",
+        f"**Perhitungan pOH:**",
+        f"  pOH = -log[OH⁻] = -log({format_angka(OH_minus)}) = {pOH:.2f}",
         "",
         f"**Perhitungan pH:**",
-        f"  pH = -log[H⁺]",
-        f"     = -log({format_angka(H_plus)})",
-        f"     = {pH:.2f}",
-        "",
-        f"**pOH:**",
-        f"  pOH = 14 - pH = 14 - {pH:.2f} = {pOH:.2f}",
+        f"  pH = 14 - pOH = 14 - {pOH:.2f} = {pH:.2f}",
     ]
-
-    ice = None  # Asam kuat tidak butuh tabel ICE
 
     return {
         "steps": steps,
-        "ice": ice,
-        "mol": {
-            "zat": mol_asam,
-            "H_plus": mol_asam,
-        },
+        "ice": None,
+        "peringatan": peringatan,   # ← tambahkan field ini
+        "mol": {"zat": mol_basa, "OH_minus": mol_basa * n_OH},
         "result": {
-            "H_plus": H_plus,
-            "OH_minus": OH_minus,
-            "pH": pH,
-            "pOH": pOH,
-            "label": label_pH(pH),
+            "H_plus": H_plus, "OH_minus": OH_minus,
+            "pH": pH, "pOH": pOH, "label": label_pH(pH),
         }
     }
-
 
 # ─────────────────────────────────────────────
 # 2. ASAM LEMAH
