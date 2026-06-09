@@ -53,8 +53,7 @@ def format_angka(nilai: float) -> str:
 # ─────────────────────────────────────────────
 # 1. ASAM KUAT
 # ─────────────────────────────────────────────
-
-def hitung_asam_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
+def hitung_asam_kuat(nama: str, konsentrasi: float, volume: float, n_H: int = 1) -> dict:
     """
     Menghitung pH asam kuat (ionisasi sempurna).
 
@@ -65,48 +64,49 @@ def hitung_asam_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
 
     Contoh reaksi: HCl → H⁺ + Cl⁻
     """
-    # Hitung mol
     volume_L = volume / 1000
-    mol_asam = konsentrasi * volume_L
+    mol_asam  = konsentrasi * volume_L
 
-    # Ionisasi sempurna → [H⁺] = C
-    H_plus = konsentrasi
+    H_plus   = konsentrasi * n_H   
     OH_minus = Kw / H_plus
-    pH = hitung_pH(H_plus)
+    pH  = hitung_pH(H_plus)
     pOH = pKw - pH
-    
- # ── Validasi ──────────────────────────────────────
+
+    # ── Validasi ──────────────────────────────────────
     peringatan = []
     if konsentrasi > 1.0:
         peringatan.append(
             "⚠️ Konsentrasi > 1 M: rumus larutan ideal tidak akurat di konsentrasi tinggi."
         )
-    if pH > 14:
+    if pH < 0:
         peringatan.append(
-            f"⚠️ pH = {pH:.2f} melebihi skala 0–14. "
-            "Pada kondisi nyata, pH tidak dapat melebihi 14 secara signifikan."
+            f"⚠️ pH = {pH:.2f} di bawah skala normal (0–14). "
+            "Pada kondisi nyata, pH tidak dapat kurang dari 0 secara signifikan."
         )
- # ──────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────
 
     steps = [
         f"**Reaksi ionisasi:**",
-        f"  {nama}  →  kation  +  {n_OH} OH⁻  (ionisasi sempurna)",
+        f"  {nama}  →  {n_H} H⁺  +  anion  (ionisasi sempurna)",
+        "",
+        f"**Konsentrasi ion H⁺:**",
+        f"  [H⁺] = {n_H} × C = {n_H} × {konsentrasi} = {format_angka(H_plus)} M",
         "",
         f"**Konsentrasi ion OH⁻:**",
-        f"  [OH⁻] = {n_OH} × C = {n_OH} × {konsentrasi} = {format_angka(OH_minus)} M",
-        "",
-        f"**Perhitungan pOH:**",
-        f"  pOH = -log[OH⁻] = -log({format_angka(OH_minus)}) = {pOH:.2f}",
+        f"  [OH⁻] = Kw / [H⁺] = {format_angka(OH_minus)} M",
         "",
         f"**Perhitungan pH:**",
-        f"  pH = 14 - pOH = 14 - {pOH:.2f} = {pH:.2f}",
+        f"  pH = -log[H⁺] = -log({format_angka(H_plus)}) = {pH:.2f}",
+        "",
+        f"**pOH:**",
+        f"  pOH = 14 - pH = 14 - {pH:.2f} = {pOH:.2f}",
     ]
 
     return {
         "steps": steps,
         "ice": None,
-        "peringatan": peringatan,   # ← tambahkan field ini
-        "mol": {"zat": mol_basa, "OH_minus": mol_basa * n_OH},
+        "peringatan": peringatan,
+        "mol": {"zat": mol_asam, "H_plus": mol_asam * n_H},
         "result": {
             "H_plus": H_plus, "OH_minus": OH_minus,
             "pH": pH, "pOH": pOH, "label": label_pH(pH),
@@ -199,8 +199,7 @@ def hitung_asam_lemah(nama: str, konsentrasi: float, Ka: float) -> dict:
 # ─────────────────────────────────────────────
 # 3. BASA KUAT
 # ─────────────────────────────────────────────
-
-def hitung_basa_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
+def hitung_basa_kuat(nama: str, konsentrasi: float, volume: float, n_OH: int = 1) -> dict:
     """
     Menghitung pH basa kuat (ionisasi sempurna).
 
@@ -211,14 +210,16 @@ def hitung_basa_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
 
     Contoh reaksi: NaOH → Na⁺ + OH⁻
     """
+  
     volume_L = volume / 1000
     mol_basa = konsentrasi * volume_L
 
-    OH_minus = konsentrasi * n_OH
-    H_plus = Kw / OH_minus
+    OH_minus = konsentrasi * n_OH   # ← FIX: kalikan jumlah OH⁻
+    H_plus   = Kw / OH_minus
     pOH = hitung_pOH(OH_minus)
-    pH = pKw - pOH
- # ── Validasi ──────────────────────────────────────
+    pH  = pKw - pOH
+
+    # ── Validasi ──────────────────────────────────────
     peringatan = []
     if konsentrasi > 1.0:
         peringatan.append(
@@ -229,28 +230,17 @@ def hitung_basa_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
             f"⚠️ pH = {pH:.2f} melebihi skala 0–14. "
             "Pada kondisi nyata, pH tidak dapat melebihi 14 secara signifikan."
         )
- # ──────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────
 
     steps = [
         f"**Reaksi ionisasi:**",
-        f"  {nama}  →  kation⁺  +  OH⁻  (ionisasi sempurna, α = 1)",
-        "",
-        f"**Perhitungan mol:**",
-        f"  Mol {nama} = C × V = {konsentrasi} M × {volume} mL × (1 L / 1000 mL)",
-        f"             = {mol_basa:.6f} mol",
+        f"  {nama}  →  kation  +  {n_OH} OH⁻  (ionisasi sempurna)",
         "",
         f"**Konsentrasi ion OH⁻:**",
-        f"  Karena ionisasi sempurna:",
-        f"  [OH⁻] = [{nama}] = {format_angka(OH_minus)} M",
-        "",
-        f"**Konsentrasi ion H⁺:**",
-        f"  [H⁺] = Kw / [OH⁻] = 10⁻¹⁴ / {format_angka(OH_minus)}",
-        f"        = {format_angka(H_plus)} M",
+        f"  [OH⁻] = {n_OH} × C = {n_OH} × {konsentrasi} = {format_angka(OH_minus)} M",
         "",
         f"**Perhitungan pOH:**",
-        f"  pOH = -log[OH⁻]",
-        f"      = -log({format_angka(OH_minus)})",
-        f"      = {pOH:.2f}",
+        f"  pOH = -log[OH⁻] = -log({format_angka(OH_minus)}) = {pOH:.2f}",
         "",
         f"**Perhitungan pH:**",
         f"  pH = 14 - pOH = 14 - {pOH:.2f} = {pH:.2f}",
@@ -259,17 +249,11 @@ def hitung_basa_kuat(nama: str, konsentrasi: float, volume: float) -> dict:
     return {
         "steps": steps,
         "ice": None,
-        "peringatan": peringatan,   
-        "mol": {
-            "zat": mol_basa,
-            "OH_minus": mol_basa,
-        },
+        "peringatan": peringatan,   # ← tambahkan field ini
+        "mol": {"zat": mol_basa, "OH_minus": mol_basa * n_OH},
         "result": {
-            "H_plus": H_plus,
-            "OH_minus": OH_minus,
-            "pH": pH,
-            "pOH": pOH,
-            "label": label_pH(pH),
+            "H_plus": H_plus, "OH_minus": OH_minus,
+            "pH": pH, "pOH": pOH, "label": label_pH(pH),
         }
     }
 
