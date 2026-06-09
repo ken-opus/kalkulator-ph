@@ -252,13 +252,14 @@ def tampilkan_steps(steps: list):
 # ═══════════════════════════════════════════════════════
 
 ASAM_KUAT_LIST = {
-    "HCl (Asam Klorida)":     {"simbol": "HCl"},
-    "HBr (Asam Bromida)":     {"simbol": "HBr"},
-    "HI (Asam Iodida)":       {"simbol": "HI"},
-    "HNO₃ (Asam Nitrat)":     {"simbol": "HNO₃"},
-    "H₂SO₄ (Asam Sulfat)":    {"simbol": "H₂SO₄"},
-    "HClO₄ (Asam Perklorat)": {"simbol": "HClO₄"},
-    "Lainnya (ketik sendiri)": {"simbol": ""},
+    "HCl (Asam Klorida)":      {"simbol": "HCl",   "n_H": 1},
+    "HBr (Asam Bromida)":      {"simbol": "HBr",   "n_H": 1},
+    "HI (Asam Iodida)":        {"simbol": "HI",    "n_H": 1},
+    "HNO₃ (Asam Nitrat)":      {"simbol": "HNO₃",  "n_H": 1},
+    "H₂SO₄ (Asam Sulfat)":     {"simbol": "H₂SO₄", "n_H": 2}, 
+    "HClO₄ (Asam Perklorat)":  {"simbol": "HClO₄", "n_H": 1},
+    "Lainnya (ketik sendiri)":  {"simbol": "",       "n_H": 1},
+}
 }
 
 ASAM_LEMAH_LIST = {
@@ -271,12 +272,13 @@ ASAM_LEMAH_LIST = {
 }
 
 BASA_KUAT_LIST = {
-    "NaOH (Natrium Hidroksida)":  {"simbol": "NaOH"},
-    "KOH (Kalium Hidroksida)":    {"simbol": "KOH"},
-    "Ca(OH)₂ (Kalsium Hidroksida)": {"simbol": "Ca(OH)₂"},
-    "LiOH (Litium Hidroksida)":   {"simbol": "LiOH"},
-    "Ba(OH)₂ (Barium Hidroksida)": {"simbol": "Ba(OH)₂"},
-    "Lainnya (ketik sendiri)":    {"simbol": ""},
+    "NaOH (Natrium Hidroksida)":      {"simbol": "NaOH",    "n_OH": 1, "sol_max": None},
+    "KOH (Kalium Hidroksida)":        {"simbol": "KOH",     "n_OH": 1, "sol_max": None},
+    "Ca(OH)₂ (Kalsium Hidroksida)":   {"simbol": "Ca(OH)₂", "n_OH": 2, "sol_max": 0.02},
+    "LiOH (Litium Hidroksida)":       {"simbol": "LiOH",    "n_OH": 1, "sol_max": None},
+    "Ba(OH)₂ (Barium Hidroksida)":    {"simbol": "Ba(OH)₂", "n_OH": 2, "sol_max": 0.10},
+    "Lainnya (ketik sendiri)":        {"simbol": "",         "n_OH": 1, "sol_max": None},
+}
 }
 
 BASA_LEMAH_LIST = {
@@ -469,7 +471,7 @@ with tab3:
             try:
                 hasil = hitung_basa_kuat(nama_bk, konsentrasi_bk, volume_bk)
                 r = hasil["result"]
-
+                
                 st.markdown('<hr class="divider">', unsafe_allow_html=True)
                 st.markdown("#### 📋 Hasil Perhitungan")
 
@@ -495,7 +497,17 @@ with tab3:
                         st.write("")
                     else:
                         st.code(step.strip(), language=None)
-
+                # Peringatan solubilitas
+                sol_max = info_bk.get("sol_max")
+                if sol_max and konsentrasi_bk > sol_max:
+                    st.error(
+                        f"❌ Konsentrasi {konsentrasi_bk} M melebihi kelarutan maksimum "
+                        f"{nama_bk} (~{sol_max} M). Larutan ini tidak mungkin terbentuk."
+                    )
+                    st.stop()
+                # Peringatan dari kalkulator
+                for p in hasil.get("peringatan", []):
+                    st.warning(p)
             except Exception as e:
                 st.error(f"Terjadi kesalahan: {e}")
 
