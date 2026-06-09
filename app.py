@@ -323,7 +323,6 @@ with col2:
 # ── Footer ─────────────────────────────────────────────
 st.markdown("""
 <div class="footer">
-    ⚗️ Kalkulator pH Interaktif &nbsp;|&nbsp; Suhu referensi 25°C &nbsp;|&nbsp;
-    Dibuat dengan Streamlit &nbsp;|&nbsp; Untuk keperluan pembelajaran kimia
+    ⚗️ Kalkulator pH Interaktif &nbsp;|&nbsp; Suhu referensi 25°C &nbsp
 </div>
 """, unsafe_allow_html=True)
