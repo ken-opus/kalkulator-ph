@@ -260,7 +260,6 @@ ASAM_KUAT_LIST = {
     "HClO₄ (Asam Perklorat)":  {"simbol": "HClO₄", "n_H": 1},
     "Lainnya (ketik sendiri)":  {"simbol": "",       "n_H": 1},
 }
-}
 
 ASAM_LEMAH_LIST = {
     "CH₃COOH (Asam Asetat)  — Ka = 1.8×10⁻⁵":  {"simbol": "CH₃COOH", "Ka": 1.8e-5},
@@ -278,7 +277,6 @@ BASA_KUAT_LIST = {
     "LiOH (Litium Hidroksida)":       {"simbol": "LiOH",    "n_OH": 1, "sol_max": None},
     "Ba(OH)₂ (Barium Hidroksida)":    {"simbol": "Ba(OH)₂", "n_OH": 2, "sol_max": 0.10},
     "Lainnya (ketik sendiri)":        {"simbol": "",         "n_OH": 1, "sol_max": None},
-}
 }
 
 BASA_LEMAH_LIST = {
